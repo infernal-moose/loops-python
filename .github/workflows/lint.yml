@@ -1,15 +1,13 @@
-name: Tests
+name: Lint
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - "*"
+    branches: ["*"]
 
 jobs:
-  test:
+  ruff:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,5 +22,5 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/python-cache-build
 
-      - name: Run test suite
-        run: make test
+      - name: Run Ruff
+        run: make lint

@@ -1,0 +1,26 @@
+name: Python Cache
+description: General caching for Python build artifacts.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "0.6.3"
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
+    - run: du -sh * .* | sort -h -r
+      shell: bash
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+
+    - run: du -sh * .* | sort -h -r
+      shell: bash
+
+    - name: Run setup script
+      run: uv sync --all-extras --dev --frozen
+      shell: bash
+

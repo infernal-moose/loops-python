@@ -10,6 +10,17 @@ A self-contained Python module that acts as a Loops.so SDK, providing the same i
 - **Testing**: Extensive test suite with mocking for external API calls
 - **Easy Integration**: Simple, intuitive API that mirrors other Loops SDKs
 
+## Development
+
+### Pre-commit hooks
+
+Install and run hooks automatically on commit:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
 ## Installation
 
 Since this is a self-contained module, simply copy the `loops_sdk.py` file to your project directory.

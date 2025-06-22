@@ -6,7 +6,7 @@ Author-email: Loops <support@loops.so>
 License: MIT
 Project-URL: Homepage, https://github.com/loops-so/loops-python
 Project-URL: Issues, https://github.com/loops-so/loops-python/issues
-Requires-Python: >=3.8
+Requires-Python: >=3.9
 Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: requests==2.31.0
@@ -16,6 +16,8 @@ Provides-Extra: test
 Requires-Dist: pytest==7.4.4; extra == "test"
 Requires-Dist: pytest-mock==3.14.0; extra == "test"
 Requires-Dist: coverage==7.4.4; extra == "test"
+Requires-Dist: ruff==0.4.4; extra == "test"
+Requires-Dist: pre-commit==4.2.0; extra == "test"
 Dynamic: license-file
 
 # Loops SDK for Python
@@ -29,6 +31,17 @@ A self-contained Python module that acts as a Loops.so SDK, providing the same i
 - **Error Handling**: Comprehensive error handling with meaningful error messages
 - **Testing**: Extensive test suite with mocking for external API calls
 - **Easy Integration**: Simple, intuitive API that mirrors other Loops SDKs
+
+## Development
+
+### Pre-commit hooks
+
+Install and run hooks automatically on commit:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
 
 ## Installation
 
