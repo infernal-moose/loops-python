@@ -12,6 +12,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    environment: release
 
     steps:
       - name: Check out repository
