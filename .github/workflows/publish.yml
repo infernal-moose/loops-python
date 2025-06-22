@@ -21,7 +21,7 @@ jobs:
         uses: ./.github/actions/python-cache-build
 
       - name: Build distribution
-        run: python -m build
+        run: uv run python -m build
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
