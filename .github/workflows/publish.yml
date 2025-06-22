@@ -9,6 +9,9 @@ jobs:
   build-and-publish:
     name: Build & publish
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Check out repository
@@ -17,8 +20,10 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/python-cache-build
 
+      - name: Build distribution
+        run: python -m build
+
       - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: make pypi-publish
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
