@@ -21,8 +21,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Upgrade pip and install required tools
-        run: make setup
+      - name: Install dependencies
+        run: actions/python-cache-build@v1
 
       - name: Run test suite
         run: make test
