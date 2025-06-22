@@ -5,9 +5,14 @@ pypi-publish:
 
 setup:
 	uv venv .venv
-	uv ci
+	uv sync --all-extras --dev --frozen
+	pre-commit install
 .PHONY: setup
 
 test:
 	uv run pytest
 .PHONY: test
+
+lint:
+	uv run ruff .
+.PHONY: lint
