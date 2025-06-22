@@ -22,9 +22,7 @@ jobs:
           python-version: "3.11"
 
       - name: Upgrade pip and install required tools
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install uv
+        run: make setup
 
       - name: Run test suite
         run: make test
