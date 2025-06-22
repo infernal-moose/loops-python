@@ -8,39 +8,22 @@ A self-contained Python module that acts as a Loops.so SDK, providing the same i
 - **Type Safety**: Uses Python dataclasses and type hints for better development experience
 - **Error Handling**: Comprehensive error handling with meaningful error messages
 - **Testing**: Extensive test suite with mocking for external API calls
-- **Easy Integration**: Simple, intuitive API that mirrors other Loops SDKs
-
-## Development
-
-### Pre-commit hooks
-
-Install and run hooks automatically on commit:
-
-```bash
-pip install pre-commit
-pre-commit install
-```
+- **Easy Integration**: Simple, intuitive API that mirrors other Loops SDK
 
 ## Installation
 
-Since this is a self-contained module, simply copy the `loops_sdk.py` file to your project directory.
+Add `loops-sdk` to your project. `pip install loops-sdk`
 
 ### Dependencies
 
 The SDK requires the following Python packages:
 - `requests` (for HTTP API calls)
-- `dataclasses` (built-in for Python 3.7+)
-- `typing` (built-in for Python 3.5+)
 
-Install dependencies:
-```bash
-pip install requests
-```
 
 ## Quick Start
 
 ```python
-from loops_sdk import LoopsClient, send_invite_email
+from loops_sdk import LoopsClient, send_transactional_email
 
 # Initialize the client
 client = LoopsClient(api_key="your-loops-api-key")
@@ -49,11 +32,17 @@ client = LoopsClient(api_key="your-loops-api-key")
 client = LoopsClient()
 
 # Send an invite email
-response = send_invite_email(
+response = send_transactional_email(
     client=client,
     email="newuser@example.com",
-    inviter_name="Alice Smith",
-    invite_url="https://myapp.com/join/abc123"
+    transactional_id="your-custom-template-id",
+    add_to_audience=True,
+    data_variables={
+        "customerName": "Alice Johnson",
+        "invoiceNumber": "INV-001",
+        "amount": "$99.99"
+    },
+    attachments=[attachment]
 )
 
 print(f"Email sent successfully: {response}")
@@ -107,19 +96,6 @@ Creates a password reset email object.
 
 **Returns:** `LoopsEmail` object
 
-### Convenience Functions
-
-#### send_invite_email(client, email, inviter_name, invite_url)
-
-Sends an invite email directly.
-
-#### send_validation_email(client, email, name, verification_url)
-
-Sends a validation email directly.
-
-#### send_password_reset_email(client, email, name, reset_url)
-
-Sends a password reset email directly.
 
 ## Usage Examples
 

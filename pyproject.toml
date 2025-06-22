@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "loops-sdk"
-version = "0.3.0"
+version = "0.3.1"
 description = "Loops SDK for Python"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -13,9 +13,7 @@ authors = [
   {name = "Adrian Chen", email = "pypi@familiar.pub"}
 ]
 dependencies = [
-  "requests==2.31.0",
-  "build==1.2.2.post1",
-  "twine==6.1.0"
+  "requests==2.31.0"
 ]
 
 [project.optional-dependencies]
@@ -28,6 +26,8 @@ test = [
   "coverage==7.4.4",
   "ruff==0.4.4",
   "pre-commit==4.2.0",
+  "build==1.2.2.post1",
+  "twine==6.1.0",
 ]
 
 [project.urls]

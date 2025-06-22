@@ -7,6 +7,8 @@ Thank you for your interest in contributing to Loops Python SDK. We welcome cont
 1. Fork the repository on GitHub.
 2. Clone your fork locally: `git clone <https://github.com/infernal-moose/loops-python.git`>
 3. Create a new branch for your feature or bug fix: `git checkout -b your-branch-name`
+4. Install UV: `brew install uv`
+5. Install dependencies: `make setup`
 
 ## Making Changes
 
