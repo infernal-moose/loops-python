@@ -20,7 +20,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: actions/python-cache-build@v1
+        uses: ./.github/actions/python-cache-build
 
       - name: Run Ruff
         run: make lint
