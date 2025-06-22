@@ -14,5 +14,5 @@ test:
 .PHONY: test
 
 lint:
-	uv run check ruff .
+	uv run ruff check .
 .PHONY: lint
