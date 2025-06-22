@@ -21,6 +21,6 @@ runs:
       shell: bash
 
     - name: Run setup script
-      run: uv sync --frozen
+      run: uv sync --all-extras --dev --frozen
       shell: bash
 
