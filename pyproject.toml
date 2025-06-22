@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "loops-sdk"
-version = "0.2.0"
+version = "0.3.0"
 description = "Loops SDK for Python"
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
 authors = [
-  {name = "Loops", email = "support@loops.so"}
+  {name = "Adrian Chen", email = "pypi@familiar.pub"}
 ]
 dependencies = [
   "requests==2.31.0",
@@ -31,8 +31,8 @@ test = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/loops-so/loops-python"
-Issues = "https://github.com/loops-so/loops-python/issues"
+Homepage = "https://github.com/infernal-moose/loops-python"
+Issues = "https://github.com/infernal-moose/loops-python/issues"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
