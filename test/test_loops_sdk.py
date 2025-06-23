@@ -64,7 +64,7 @@ class TestLoopsEmail(unittest.TestCase):
         )
 
         result = email.to_dict()
-        self.assertEqual(result["attachments"], [])
+        self.assertNotIn("attachments", result)
 
 
 class TestLoopsClient(unittest.TestCase):
