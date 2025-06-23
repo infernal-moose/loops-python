@@ -89,13 +89,17 @@ class LoopsEmail:
 
     def to_dict(self) -> Dict[str, Any]:  # noqa: D401
         """Convert the dataclass to the exact payload expected by the Loops API."""
-        return {
+        payload = {
             "email": self.email,
             "transactionalId": self.transactional_id,
-            "addToAudience": self.add_to_audience,
-            "dataVariables": self.data_variables,
-            "attachments": [a.to_dict() for a in self.attachments] if self.attachments else [],
         }
+        if self.add_to_audience is not None:
+            payload["addToAudience"] = self.add_to_audience
+        if self.data_variables is not None:
+            payload["dataVariables"] = self.data_variables
+        if self.attachments:
+            payload["attachments"] = [a.to_dict() for a in self.attachments]
+        return payload
 
 
 # ---------------------------------------------------------------------------
