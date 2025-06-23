@@ -13,7 +13,7 @@ authors = [
   {name = "Adrian Chen", email = "pypi@familiar.pub"}
 ]
 dependencies = [
-  "requests>=2.31.0"
+  "requests>=2.31.0,<3.0.0",
 ]
 
 [project.optional-dependencies]
@@ -21,13 +21,13 @@ dependencies = [
 # Install with: `uv pip install -e .[test]`
 
 test = [
-  "pytest>=7.4.4",
-  "pytest-mock>=3.14.0",
-  "coverage>=7.4.4",
-  "ruff>=0.4.4",
-  "pre-commit>=4.2.0",
-  "build>=1.2.2.post1",
-  "twine>=6.1.0",
+  "pytest>=7.4.4,<8.0.0",
+  "pytest-mock>=3.14.0,<4.0.0",
+  "coverage>=7.4.4,<8.0.0",
+  "ruff>=0.4.4,<0.5.0",
+  "pre-commit>=4.2.0,<5.0.0",
+  "build>=1.2.2.post1,<2.0.0",
+  "twine>=6.1.0,<7.0.0",
 ]
 
 [project.urls]
