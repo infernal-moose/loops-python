@@ -7,7 +7,6 @@ All endpoints, error handling behaviour and payload shapes follow the public RES
 
 from __future__ import annotations
 
-import os
 from typing import Any, Dict, Optional, List, Union
 
 import re
@@ -120,11 +119,7 @@ class LoopsClient:
     `send_transactional_email` to minimise change friction when porting code.
     """
 
-    def __init__(self, api_key: Optional[str] = None, api_root: str = "https://app.loops.so/api/") -> None:
-        self.api_key = api_key or os.getenv("LOOPS_TOKEN", "")
-        if not self.api_key:
-            raise ValueError("Loops API key is required. Provide it directly or set LOOPS_TOKEN env var.")
-
+    def __init__(self, api_key: str, api_root: str = "https://app.loops.so/api/") -> None:
         # Normalise API root so that urljoin works as expected
         if not api_root.endswith("/"):
             api_root += "/"
@@ -133,7 +128,7 @@ class LoopsClient:
         self.session = requests.Session()
         self.session.headers.update(
             {
-                "Authorization": f"Bearer {self.api_key}",
+                "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
             }
         )
@@ -291,17 +286,18 @@ class LoopsClient:
             payload = email_or_transactional_id.to_dict()
         # Style 2: individual parameters retained for backwards-compat
         else:
+            # Build payload manually, omitting keys whose value is ``None``.
             payload = {
                 "transactionalId": email_or_transactional_id,
                 "email": email,
-                "addToAudience": add_to_audience,
-                "dataVariables": data_variables,
-                "attachments": attachments,
             }
+            if add_to_audience is not None:
+                payload["addToAudience"] = add_to_audience
+            if data_variables is not None:
+                payload["dataVariables"] = data_variables
+            if attachments is not None:
+                payload["attachments"] = attachments
         return self._make_query(path="v1/transactional", method="POST", headers=headers, payload=payload)
-
-    # camelCase alias for API parity with TypeScript version
-    sendTransactionalEmail = send_transactional_email  # type: ignore
 
     def get_transactional_emails(
         self,
