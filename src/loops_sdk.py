@@ -7,7 +7,6 @@ All endpoints, error handling behaviour and payload shapes follow the public RES
 
 from __future__ import annotations
 
-import os
 from typing import Any, Dict, Optional, List, Union
 
 import re
@@ -90,13 +89,17 @@ class LoopsEmail:
 
     def to_dict(self) -> Dict[str, Any]:  # noqa: D401
         """Convert the dataclass to the exact payload expected by the Loops API."""
-        return {
+        payload = {
             "email": self.email,
             "transactionalId": self.transactional_id,
-            "addToAudience": self.add_to_audience,
-            "dataVariables": self.data_variables,
-            "attachments": [a.to_dict() for a in self.attachments] if self.attachments else [],
         }
+        if self.add_to_audience is not None:
+            payload["addToAudience"] = self.add_to_audience
+        if self.data_variables is not None:
+            payload["dataVariables"] = self.data_variables
+        if self.attachments:
+            payload["attachments"] = [a.to_dict() for a in self.attachments]
+        return payload
 
 
 # ---------------------------------------------------------------------------
@@ -120,11 +123,7 @@ class LoopsClient:
     `send_transactional_email` to minimise change friction when porting code.
     """
 
-    def __init__(self, api_key: Optional[str] = None, api_root: str = "https://app.loops.so/api/") -> None:
-        self.api_key = api_key or os.getenv("LOOPS_TOKEN", "")
-        if not self.api_key:
-            raise ValueError("Loops API key is required. Provide it directly or set LOOPS_TOKEN env var.")
-
+    def __init__(self, api_key: str, api_root: str = "https://app.loops.so/api/") -> None:
         # Normalise API root so that urljoin works as expected
         if not api_root.endswith("/"):
             api_root += "/"
@@ -133,7 +132,7 @@ class LoopsClient:
         self.session = requests.Session()
         self.session.headers.update(
             {
-                "Authorization": f"Bearer {self.api_key}",
+                "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
             }
         )
@@ -273,35 +272,18 @@ class LoopsClient:
 
     def send_transactional_email(
         self,
-        email_or_transactional_id: Union["LoopsEmail", str],
-        email: Optional[str] = None,
-        add_to_audience: Optional[bool] = None,
-        data_variables: Optional[Dict[str, Union[str, int]]] = None,
-        attachments: Optional[List[Dict[str, Any]]] = None,
+        email: LoopsEmail,
         headers: Optional[Dict[str, str]] = None,
     ) -> Dict[str, Any]:
         """Send a transactional email.
 
         This method supports two calling styles:
-        1. Pass a ``LoopsEmail`` instance as the first positional argument.
-        2. Provide individual parameters (deprecated but kept for parity).
+        Pass a ``LoopsEmail`` instance as the first positional argument.
         """
-        # Style 1: ``client.send_transactional_email(LoopsEmail(...))``
-        if isinstance(email_or_transactional_id, LoopsEmail):
-            payload = email_or_transactional_id.to_dict()
-        # Style 2: individual parameters retained for backwards-compat
-        else:
-            payload = {
-                "transactionalId": email_or_transactional_id,
-                "email": email,
-                "addToAudience": add_to_audience,
-                "dataVariables": data_variables,
-                "attachments": attachments,
-            }
-        return self._make_query(path="v1/transactional", method="POST", headers=headers, payload=payload)
 
-    # camelCase alias for API parity with TypeScript version
-    sendTransactionalEmail = send_transactional_email  # type: ignore
+        payload = email.to_dict()
+
+        return self._make_query(path="v1/transactional", method="POST", headers=headers, payload=payload)
 
     def get_transactional_emails(
         self,

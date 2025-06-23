@@ -3,3 +3,6 @@
 .venv
 .pytest_cache
 dist
+src/__pycache__
+test/__pycache__
+src/loops_sdk.egg-info

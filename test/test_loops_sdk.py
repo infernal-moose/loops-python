@@ -5,7 +5,6 @@ providing comprehensive coverage of the SDK functionality.
 """
 
 import unittest
-import os
 from unittest.mock import Mock, patch
 import requests
 
@@ -65,7 +64,7 @@ class TestLoopsEmail(unittest.TestCase):
         )
 
         result = email.to_dict()
-        self.assertEqual(result["attachments"], [])
+        self.assertNotIn("attachments", result)
 
 
 class TestLoopsClient(unittest.TestCase):
@@ -85,22 +84,8 @@ class TestLoopsClient(unittest.TestCase):
     def test_client_initialization_with_api_key(self):
         """Test client initialization with provided API key."""
         client = LoopsClient(api_key="test-key")
-        self.assertEqual(client.api_key, "test-key")
         self.assertEqual(client.session.headers["Authorization"], "Bearer test-key")
         self.assertEqual(client.session.headers["Content-Type"], "application/json")
-
-    @patch.dict(os.environ, {"LOOPS_TOKEN": "env-api-key"})
-    def test_client_initialization_from_env(self):
-        """Test client initialization from environment variable."""
-        client = LoopsClient()
-        self.assertEqual(client.api_key, "env-api-key")
-
-    def test_client_initialization_no_api_key(self):
-        """Test client initialization fails without API key."""
-        with patch.dict(os.environ, {}, clear=True):
-            with self.assertRaises(ValueError) as context:
-                LoopsClient()
-            self.assertIn("Loops API key is required", str(context.exception))
 
     # ------------------------------------------------------------------
     # New tests mirrored from TypeScript SDK suite
