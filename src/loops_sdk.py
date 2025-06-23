@@ -272,35 +272,17 @@ class LoopsClient:
 
     def send_transactional_email(
         self,
-        email_or_transactional_id: Union["LoopsEmail", str],
-        email: Optional[str] = None,
-        add_to_audience: Optional[bool] = None,
-        data_variables: Optional[Dict[str, Union[str, int]]] = None,
-        attachments: Optional[List[Dict[str, Any]]] = None,
+        email: LoopsEmail,
         headers: Optional[Dict[str, str]] = None,
     ) -> Dict[str, Any]:
         """Send a transactional email.
 
         This method supports two calling styles:
-        1. Pass a ``LoopsEmail`` instance as the first positional argument.
-        2. Provide individual parameters (deprecated but kept for parity).
+        Pass a ``LoopsEmail`` instance as the first positional argument.
         """
-        # Style 1: ``client.send_transactional_email(LoopsEmail(...))``
-        if isinstance(email_or_transactional_id, LoopsEmail):
-            payload = email_or_transactional_id.to_dict()
-        # Style 2: individual parameters retained for backwards-compat
-        else:
-            # Build payload manually, omitting keys whose value is ``None``.
-            payload = {
-                "transactionalId": email_or_transactional_id,
-                "email": email,
-            }
-            if add_to_audience is not None:
-                payload["addToAudience"] = add_to_audience
-            if data_variables is not None:
-                payload["dataVariables"] = data_variables
-            if attachments is not None:
-                payload["attachments"] = attachments
+
+        payload = email.to_dict()
+
         return self._make_query(path="v1/transactional", method="POST", headers=headers, payload=payload)
 
     def get_transactional_emails(
