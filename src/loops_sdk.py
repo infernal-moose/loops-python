@@ -15,7 +15,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-__version__ = "1.0.0"
+__version__ = "0.3.3"
 
 # ---------------------------------------------------------------------------
 # Public error types
