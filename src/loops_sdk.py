@@ -12,6 +12,8 @@ from typing import Any, Dict, Optional, List, Union
 import re
 from dataclasses import dataclass, field
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 __version__ = "1.0.0"
 
@@ -136,6 +138,19 @@ class LoopsClient:
                 "Content-Type": "application/json",
             }
         )
+
+        # Configure retry strategy to handle stale connections.
+        # When there's a gap between requests (minutes to hours), the server may
+        # close idle connections. The client needs to detect this and retry.
+        retry_strategy = Retry(
+            total=3,
+            backoff_factor=0.1,
+            # Retry on connection errors (including stale connections)
+            raise_on_status=False,
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        self.session.mount("https://", adapter)
+        self.session.mount("http://", adapter)
 
     # ---------------------------------------------------------------------
     # Internal helper
